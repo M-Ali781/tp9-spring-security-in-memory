@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil - TP 9 Spring Security</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header>
+        <a th:href="@{/}" class="brand">
+            🛡️ Spring Security Demo
+        </a>
+        <div class="nav-links">
+            <span th:if="${authenticated}" class="user-badge">
+                👤 Connecté : <strong th:text="${username}">user</strong> (<span th:text="${roles}">ROLE_USER</span>)
+            </span>
+            <a th:href="@{/}" style="font-weight: 700;">Accueil</a>
+            <a th:href="@{/user/dashboard}">Espace Utilisateur</a>
+            <a th:href="@{/admin/dashboard}">Espace Admin</a>
+            <a th:if="${!authenticated}" th:href="@{/login}" class="btn btn-outline" style="padding: 0.4rem 1rem;">Connexion</a>
+            <form th:if="${authenticated}" th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-danger" style="padding: 0.4rem 1rem; font-size: 0.875rem;">Déconnexion</button>
+            </form>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card">
+            <h1>Bienvenue sur l'application publique</h1>
+            <p class="card-subtitle">
+                Ce TP illustre la mise en place d'une authentification en mémoire avec <strong>Spring Security 6</strong>,
+                le hachage de mots de passe avec <strong>BCryptPasswordEncoder</strong>, et le contrôle d'accès basé sur les rôles.
+            </p>
+
+            <div th:if="${authenticated}" class="alert alert-success">
+                ✅ Vous êtes actuellement connecté en tant que <strong th:text="${username}">user</strong> avec les autorités : <code th:text="${roles}">ROLE_USER</code>.
+            </div>
+
+            <div th:if="${!authenticated}" class="alert alert-error" style="background: #fffbeb; border-color: #fde68a; color: #92400e;">
+                ℹ️ Vous êtes en mode <strong>Visiteur Anonyme</strong>. Certaines sections nécessitent une authentification.
+            </div>
+
+            <h2 style="margin-top: 2rem;">Accès aux zones protégées :</h2>
+            <div class="grid">
+                <!-- Carte Espace Utilisateur -->
+                <a th:href="@{/user/dashboard}" class="dashboard-card">
+                    <h3>👤 Espace Utilisateur</h3>
+                    <p>Accessible à tous les utilisateurs ayant le rôle <code>ROLE_USER</code> (comptes <code>user</code> et <code>admin</code>).</p>
+                    <span class="badge-role badge-user">Exige : ROLE_USER</span>
+                </a>
+
+                <!-- Carte Espace Administrateur -->
+                <a th:href="@{/admin/dashboard}" class="dashboard-card">
+                    <h3>👑 Espace Administrateur</h3>
+                    <p>Réservé strictement aux administrateurs ayant le rôle <code>ROLE_ADMIN</code> (compte <code>admin</code>).</p>
+                    <span class="badge-role badge-admin">Exige : ROLE_ADMIN</span>
+                </a>
+            </div>
+
+            <div class="accounts-info" style="margin-top: 2.5rem;">
+                <h4 style="margin-bottom: 0.5rem; color: var(--text-main);">📋 Identifiants de test préconfigurés :</h4>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 0.5rem;">
+                    <thead>
+                        <tr style="text-align: left; border-bottom: 1px solid var(--border);">
+                            <th style="padding: 0.5rem;">Utilisateur</th>
+                            <th style="padding: 0.5rem;">Mot de passe</th>
+                            <th style="padding: 0.5rem;">Rôles attribués</th>
+                            <th style="padding: 0.5rem;">Accès autorisés</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 0.5rem;"><code>user</code></td>
+                            <td style="padding: 0.5rem;"><code>1111</code> (BCrypt)</td>
+                            <td style="padding: 0.5rem;"><span class="badge-role badge-user">ROLE_USER</span></td>
+                            <td style="padding: 0.5rem;">Accueil, Espace Utilisateur</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.5rem;"><code>admin</code></td>
+                            <td style="padding: 0.5rem;"><code>1234</code> (BCrypt)</td>
+                            <td style="padding: 0.5rem;">
+                                <span class="badge-role badge-admin">ROLE_ADMIN</span>
+                                <span class="badge-role badge-user">ROLE_USER</span>
+                            </td>
+                            <td style="padding: 0.5rem;">Accueil, Espace Utilisateur, Espace Admin</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>TP 9 - Développement JakartaEE : Spring Boot &amp; Spring Security &bull; FSTG 2026</p>
+    </footer>
+</body>
+</html>
+

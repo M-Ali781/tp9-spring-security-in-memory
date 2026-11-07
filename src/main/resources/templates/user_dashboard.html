@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Utilisateur - Application Sécurisée</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header>
+        <a th:href="@{/}" class="brand">
+            🛡️ Spring Security Demo
+        </a>
+        <div class="nav-links">
+            <span class="user-badge">
+                👤 Connecté : <strong th:text="${username}">user</strong>
+            </span>
+            <a th:href="@{/}">Accueil</a>
+            <a th:href="@{/user/dashboard}" style="font-weight: 700;">Espace Utilisateur</a>
+            <a th:href="@{/admin/dashboard}">Espace Admin</a>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-danger" style="padding: 0.4rem 1rem; font-size: 0.875rem;">Déconnexion</button>
+            </form>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+                <h1>👤 Tableau de Bord Utilisateur</h1>
+                <span class="badge-role badge-user" style="font-size: 0.9rem; padding: 0.4rem 0.8rem;">ROLE_USER Requis</span>
+            </div>
+
+            <div class="alert alert-success">
+                🎉 Félicitations <strong><span th:text="${username}">user</span></strong> ! Vous avez réussi à vous authentifier et vous accédez à la zone réservée aux utilisateurs.
+            </div>
+
+            <p class="card-subtitle">
+                Cette page est protégée par la règle Spring Security : <code>.requestMatchers("/user/**").hasRole("USER")</code>.
+            </p>
+
+            <div style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border); margin: 1.5rem 0;">
+                <h3 style="margin-bottom: 0.75rem;">Informations sur votre session :</h3>
+                <ul style="padding-left: 1.5rem; line-height: 2;">
+                    <li><strong>Nom d'utilisateur :</strong> <span th:text="${username}">user</span></li>
+                    <li><strong>Autorités accordées :</strong> <code th:text="${roles}">ROLE_USER</code></li>
+                    <li><strong>Statut d'accès :</strong> <span style="color: var(--success); font-weight: 600;">Autorisé (HTTP 200)</span></li>
+                    <li><strong>Chiffrement mot de passe :</strong> <code>BCrypt</code></li>
+                </ul>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <a th:href="@{/}" class="btn btn-outline">← Retour à l'accueil</a>
+                <a th:href="@{/admin/dashboard}" class="btn btn-outline">Tenter l'accès Admin →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>TP 9 - Développement JakartaEE : Spring Boot &amp; Spring Security &bull; FSTG 2026</p>
+    </footer>
+</body>
+</html>
+

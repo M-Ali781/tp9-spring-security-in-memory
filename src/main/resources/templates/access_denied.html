@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accès Refusé (403) - Spring Security</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header>
+        <a th:href="@{/}" class="brand">
+            🛡️ Spring Security Demo
+        </a>
+        <div class="nav-links">
+            <span th:if="${authenticated}" class="user-badge">
+                👤 Connecté : <strong th:text="${username}">user</strong>
+            </span>
+            <a th:href="@{/}">Accueil</a>
+            <a th:href="@{/user/dashboard}">Espace Utilisateur</a>
+            <a th:if="${authenticated}" th:href="@{/logout}" class="btn btn-outline" style="padding: 0.4rem 1rem;">Déconnexion</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card" style="border-top: 4px solid var(--danger); text-align: center; padding: 3rem 2rem;">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">🚫</div>
+            <h1 style="color: var(--danger); margin-bottom: 0.5rem;">Erreur 403 - Accès Refusé</h1>
+            <p class="card-subtitle" style="font-size: 1.1rem; margin-bottom: 1.5rem;">
+                Désolé, vous ne disposez pas des privilèges nécessaires pour accéder à cette ressource.
+            </p>
+
+            <div class="alert alert-error" style="display: inline-block; text-align: left; max-width: 600px; margin: 0 auto 2rem auto;">
+                <p><strong>Détails de la restriction :</strong></p>
+                <p>L'URL demandée requiert le rôle <code>ROLE_ADMIN</code>.</p>
+                <p th:if="${authenticated}">
+                    Votre compte actuel (<strong><span th:text="${username}">user</span></strong>) possède uniquement les rôles : <code th:text="${roles}">ROLE_USER</code>.
+                </p>
+            </div>
+
+            <div>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                    Pour accéder à l'administration, veuillez vous déconnecter et vous identifier avec le compte <code>admin</code>.
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <a th:href="@{/}" class="btn btn-primary" style="width: auto;">← Retour à l'accueil</a>
+                    <a th:href="@{/user/dashboard}" class="btn btn-outline">Mon Espace Utilisateur</a>
+                    <form th:action="@{/logout}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Changer de compte</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>TP 9 - Développement JakartaEE : Spring Boot &amp; Spring Security &bull; FSTG 2026</p>
+    </footer>
+</body>
+</html>
+

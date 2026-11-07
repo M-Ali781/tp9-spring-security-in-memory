@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Administrateur - Application Sécurisée</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header>
+        <a th:href="@{/}" class="brand">
+            🛡️ Spring Security Demo
+        </a>
+        <div class="nav-links">
+            <span class="user-badge" style="background-color: #fef3c7; color: #92400e;">
+                👑 Admin : <strong th:text="${username}">admin</strong>
+            </span>
+            <a th:href="@{/}">Accueil</a>
+            <a th:href="@{/user/dashboard}">Espace Utilisateur</a>
+            <a th:href="@{/admin/dashboard}" style="font-weight: 700;">Espace Admin</a>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-danger" style="padding: 0.4rem 1rem; font-size: 0.875rem;">Déconnexion</button>
+            </form>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card" style="border-top: 4px solid var(--warning);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+                <h1>👑 Tableau de Bord Administrateur</h1>
+                <span class="badge-role badge-admin" style="font-size: 0.9rem; padding: 0.4rem 0.8rem;">ROLE_ADMIN Requis</span>
+            </div>
+
+            <div class="alert alert-success">
+                🛡️ Accès administrateur accordé à <strong><span th:text="${username}">admin</span></strong>. Vous disposez des privilèges les plus élevés.
+            </div>
+
+            <p class="card-subtitle">
+                Cette page est strictement protégée par la règle : <code>.requestMatchers("/admin/**").hasRole("ADMIN")</code>.
+                Un utilisateur standard (possédant uniquement <code>ROLE_USER</code>) recevra un refus <strong>HTTP 403 Forbidden</strong>.
+            </p>
+
+            <div class="grid" style="margin-top: 1.5rem;">
+                <div class="dashboard-card" style="background: #fff;">
+                    <h3>👥 Gestion des Utilisateurs</h3>
+                    <p>Visualiser, ajouter ou révoquer les comptes enregistrés en mémoire.</p>
+                    <span style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">Module Administrateur</span>
+                </div>
+
+                <div class="dashboard-card" style="background: #fff;">
+                    <h3>🔐 Paramètres de Sécurité</h3>
+                    <p>Politique de mots de passe, rounds BCrypt, expiration des sessions.</p>
+                    <span style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">Configuration Système</span>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border); margin: 2rem 0 1rem 0;">
+                <h3 style="margin-bottom: 0.75rem;">Détails de l'authentification :</h3>
+                <ul style="padding-left: 1.5rem; line-height: 2;">
+                    <li><strong>Identifiant :</strong> <span th:text="${username}">admin</span></li>
+                    <li><strong>Rôles accordés :</strong> <code th:text="${roles}">ROLE_ADMIN, ROLE_USER</code></li>
+                    <li><strong>Statut d'autorisation :</strong> <span style="color: var(--success); font-weight: 600;">Autorisation validée (HTTP 200)</span></li>
+                </ul>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <a th:href="@{/}" class="btn btn-outline">← Retour à l'accueil</a>
+                <a th:href="@{/user/dashboard}" class="btn btn-outline">Aller à l'espace Utilisateur →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>TP 9 - Développement JakartaEE : Spring Boot &amp; Spring Security &bull; FSTG 2026</p>
+    </footer>
+</body>
+</html>
+
